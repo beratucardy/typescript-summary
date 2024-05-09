@@ -1,0 +1,6 @@
+1-npm init
+2-npm install --save-dev lite-server
+3-"start": "lite-server"
+4-<link rel="shortcut icon" href="#" />
+5-tsc app.ts
+6-tsc app.ts -w
