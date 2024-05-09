@@ -246,4 +246,180 @@ console.log(employee2);
 
 /* --------------------------------------------------------- */
 
-// 
+// If Else Ternary Operator
+
+let x: number = 35;
+let y: number = 35;
+
+if (x > y) {
+  console.log("x, y'den büyüktür");
+} else if (x < y) {
+  console.log("x, y'den küçüktür");
+} else {
+  console.log("x ve y eşittir");
+}
+
+x > y
+  ? console.log("x, y'den büyüktür")
+  : x < y
+  ? console.log("x, y'den küçüktür")
+  : console.log("x ve y eşittir");
+
+/* --------------------------------------------------------- */
+
+// Switch Case
+
+let day: number = 2;
+
+switch (day) {
+  case 0:
+    console.log("Pazar");
+    break;
+  case 1:
+    console.log("Pazartesi");
+    break;
+  case 2:
+    console.log("Salı");
+    break;
+  case 3:
+    console.log("Çarşamba");
+    break;
+  case 4:
+    console.log("Perşembe");
+    break;
+  case 5:
+    console.log("Cuma");
+    break;
+  case 6:
+    console.log("Cumartesi");
+    break;
+  default:
+    console.log(
+      "Böyle bir gün yok! Lütfen 0 ile 6 arasında bir rakam giriniz."
+    );
+    break;
+}
+
+/* --------------------------------------------------------- */
+
+// For Loop
+
+for (let i = 0; i < 3; i++) {
+  console.log("i değerim", i);
+}
+
+let arr3 = [10, 20, 30, 40];
+
+for (let item of arr3) {
+  console.log(item);
+}
+
+let str = "Berat Uçar";
+
+for (let item of str) {
+  console.log(item);
+}
+
+/* --------------------------------------------------------- */
+
+// While Loop - Do While Loop - Break
+
+let counter = 10;
+
+while (counter < 5) {
+  console.log(counter);
+  counter++;
+  if (counter == 3) break;
+}
+
+do {
+  console.log(counter);
+  counter++;
+} while (counter < 5);
+
+/* --------------------------------------------------------- */
+
+// Function
+
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+let toplam = add(10, 20);
+
+console.log(toplam);
+
+function bastir(): void {
+  console.log("Berat Uçar");
+  // return "berat"; (yapamazsın)
+}
+
+bastir();
+
+function birlestir(ad: string, soyAd: string = "Uçar"): string {
+  return ad + " " + soyAd;
+}
+
+let degisken = birlestir("Berat");
+
+console.log(degisken);
+
+/* --------------------------------------------------------- */
+
+// Optional Parameters - Arrow Functions
+
+function carpim(a: number, b: number, c?: number): number {
+  if (typeof c !== "undefined") {
+    return a * b * c;
+  }
+  return a * b;
+}
+
+let degisken2 = carpim(5, 10);
+let degisken3 = carpim(5, 10, 3);
+
+console.log(degisken2, degisken3);
+
+const carpim2 = (a: number, b: number): number => {
+  return a * b;
+};
+
+let degisken4 = carpim2(4, 5);
+
+console.log(degisken4);
+
+const bastir2 = () => console.log("Berat Uçar");
+
+bastir2();
+
+/* --------------------------------------------------------- */
+
+// Function Overloading
+
+function add2(a: string, b: string): string;
+function add2(a: number, b: number): number;
+
+function add2(a: any, b: any): any {
+  return a + b;
+}
+
+let degisken5 = add2("Berat", " Uçar");
+let degisken6 = add2(5, 8);
+
+console.log(degisken5, degisken6);
+
+/* --------------------------------------------------------- */
+
+// Rest Parameters
+
+function toplam2(...numbers: number[]): number {
+  let total = 0;
+  numbers.forEach((num) => (total += num));
+  return total;
+}
+
+console.log(toplam2(10, 20));
+
+/* --------------------------------------------------------- */
+
+// Class
