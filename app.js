@@ -1,4 +1,19 @@
 // Data Type - Number-String-Boolean
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var age = 25;
 var firstName = "Berat";
 var lastName = "Uçar";
@@ -115,7 +130,7 @@ function throwError(errorMsg) {
     throw new Error(errorMsg);
 }
 /* throwError("Hata"); */
-var something = null;
+// let something: void = null;
 // let nothing: never = null;
 // void'e null, undefined atanabilir ama never'a atanamaz, sadece hata mesajı için kullanılır
 /* --------------------------------------------------------- */
@@ -278,3 +293,171 @@ function toplam2() {
 console.log(toplam2(10, 20));
 /* --------------------------------------------------------- */
 // Class
+var Person2 = /** @class */ (function () {
+    function Person2(id, firstName, lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    Person2.prototype.getFullName = function () {
+        return "".concat(this.firstName, " ").concat(this.lastName);
+    };
+    return Person2;
+}());
+var kisibilgim = new Person2(25, "Berat", "Uçar");
+console.log(kisibilgim);
+console.log(kisibilgim.getFullName());
+/* --------------------------------------------------------- */
+// Access Modifiers (Public Private Protected)
+var Person3 = /** @class */ (function () {
+    function Person3(id, firstName, lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    Person3.prototype.getFullName = function () {
+        return "".concat(this.firstName, " ").concat(this.lastName);
+    };
+    return Person3;
+}());
+var kisibilgim2 = new Person3(25, "Berat", "Uçar");
+console.log(kisibilgim2.id);
+// console.log(kisibilgim2.lastName) (protected olduğu için sadece class içinde veya subclasses (inheritance) içinden erişebilirim)
+// console.log(kisibilgim2.firstName) (private olduğu için sadece class içinde erişebilirim)
+/* --------------------------------------------------------- */
+// Readonly
+var Person4 = /** @class */ (function () {
+    function Person4(id, firstName, lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    Person4.prototype.getFullName = function () {
+        return "".concat(this.firstName, " ").concat(this.lastName);
+    };
+    return Person4;
+}());
+var kisibilgim3 = new Person4(25, "Berat", "Uçar");
+// kisibilgim3.id = 5; (readonly olduğu için değiştirilemez, dışarıdan erişilebilir)
+console.log(kisibilgim3.id);
+/* --------------------------------------------------------- */
+// Inheritance
+var Person5 = /** @class */ (function () {
+    function Person5(id, firstName, lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    Person5.prototype.getFullName = function () {
+        return "".concat(this.firstName, " ").concat(this.lastName);
+    };
+    return Person5;
+}());
+var Employee = /** @class */ (function (_super) {
+    __extends(Employee, _super);
+    // Person5 parent, Employee child
+    function Employee(id, firstName, lastName) {
+        return _super.call(this, id, firstName, lastName) || this;
+    }
+    return Employee;
+}(Person5));
+var employee3 = new Employee(1, "Berat", "Uçar");
+console.log(employee3);
+console.log(employee3.getFullName());
+/* --------------------------------------------------------- */
+// Static Methods - Properties
+var Circle = /** @class */ (function () {
+    function Circle() {
+        this.pi = 3; // static ile aynı isimde property oluşturabilirim
+        this.pi++; // bu statik olmadığı için 1 kere etkilenir 1 artar
+        Circle.pi++; // her new kullandığımda 1 artacak
+    }
+    Circle.hesapla = function (yaricap) {
+        return this.pi * yaricap * yaricap;
+    };
+    Circle.pi = 3.14;
+    return Circle;
+}());
+var objem = new Circle();
+var objem2 = new Circle();
+console.log(objem.pi); // normal property'i bastı
+console.log(objem2.pi); // normal property'i bastı
+console.log(Circle.pi); // static tanımlarsan new demeden bu şekilde direk erişebiliyorum
+console.log(Circle.hesapla(5)); // static method'da new demeden direk eriştim
+/* --------------------------------------------------------- */
+// Abstract Class
+var Department = /** @class */ (function () {
+    function Department(name) {
+        this.name = name;
+    }
+    Department.prototype.printName = function () {
+        console.log("Department name: " + this.name);
+    };
+    return Department;
+}());
+//abstract classların tek başına new instance ını alamazsınız
+//fakat reference verebilirsiniz
+//abstract class içinde abstract metodları mutlaka extend ettiğiniz class ta implemente
+//etmeniz lazım
+var AccountingDepartment = /** @class */ (function (_super) {
+    __extends(AccountingDepartment, _super);
+    function AccountingDepartment() {
+        return _super.call(this, "Accounting and Auditing") || this;
+    }
+    AccountingDepartment.prototype.printMeeting = function () {
+        console.log("The Accounting Department meets each Monday at 10am.");
+    };
+    AccountingDepartment.prototype.generateReports = function () {
+        console.log("Generating accounting reports...");
+    };
+    return AccountingDepartment;
+}(Department));
+var department; // abstract class sadece referans verilir, referans verince sadece AccountingDepartment bulunan generateReports methodunu kullanamam
+department = new AccountingDepartment();
+department.printName();
+department.printMeeting();
+function getFullName(person) {
+    return "".concat(person.firstName, " ").concat(person.lastName);
+}
+var person2 = {
+    firstName: "Berat",
+    lastName: "Uçar",
+};
+console.log(getFullName(person2));
+function getFullName2(person) {
+    if (person.middleName) {
+        return "".concat(person.firstName, " ").concat(person.middleName, " ").concat(person.lastName);
+    }
+    return "".concat(person.firstName, " ").concat(person.lastName);
+}
+var person3 = {
+    firstName: "Berat",
+    lastName: "Uçar",
+    middleName: "Berk",
+};
+// person3.firstName = "BERAT"; (readonly olduğu için değiştiremem)
+console.log(getFullName2(person3));
+var format;
+format = function (str, isUpper) {
+    return isUpper ? str.toLocaleUpperCase() : str.toLocaleLowerCase();
+};
+console.log(format("Berat Uçar", false));
+var employee4 = {
+    empNumber: 1,
+    gender: "Male",
+    name: "Berk",
+};
+var employeeDepartment = {
+    empDepartment: "Software Department",
+    gender: "Male",
+    name: "Berk",
+};
+console.log(employee4, employeeDepartment);
+var Employee2 = /** @class */ (function () {
+    function Employee2(name, gender, empNumber) {
+        (this.name = name), (this.gender = gender), (this.empNumber = empNumber);
+    }
+    return Employee2;
+}());
+var employee5 = new Employee2("Berat", "Male", 5);
+console.log(employee5);

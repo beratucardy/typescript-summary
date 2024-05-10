@@ -185,7 +185,7 @@ function throwError(errorMsg: string): never {
 
 /* throwError("Hata"); */
 
-let something: void = null;
+// let something: void = null;
 // let nothing: never = null;
 
 // void'e null, undefined atanabilir ama never'a atanamaz, sadece hata mesajı için kullanılır
@@ -423,3 +423,284 @@ console.log(toplam2(10, 20));
 /* --------------------------------------------------------- */
 
 // Class
+
+class Person2 {
+  id: number;
+  firstName: string;
+  lastName: string;
+
+  constructor(id: number, firstName: string, lastName: string) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+
+let kisibilgim = new Person2(25, "Berat", "Uçar");
+
+console.log(kisibilgim);
+console.log(kisibilgim.getFullName());
+
+/* --------------------------------------------------------- */
+
+// Access Modifiers (Public Private Protected)
+
+class Person3 {
+  public id: number; // hiçbir şey yazmamak ile public yazmak aynı şey
+  private firstName: string;
+  protected lastName: string;
+
+  constructor(id: number, firstName: string, lastName: string) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+
+let kisibilgim2 = new Person3(25, "Berat", "Uçar");
+
+console.log(kisibilgim2.id);
+// console.log(kisibilgim2.lastName) (protected olduğu için sadece class içinde veya subclasses (inheritance) içinden erişebilirim)
+// console.log(kisibilgim2.firstName) (private olduğu için sadece class içinde erişebilirim)
+
+/* --------------------------------------------------------- */
+
+// Readonly
+
+class Person4 {
+  readonly id: number; // hiçbir şey yazmamak ile public yazmak aynı şey
+  firstName: string;
+  lastName: string;
+
+  constructor(id: number, firstName: string, lastName: string) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+
+let kisibilgim3 = new Person4(25, "Berat", "Uçar");
+// kisibilgim3.id = 5; (readonly olduğu için değiştirilemez, dışarıdan erişilebilir)
+
+console.log(kisibilgim3.id);
+
+/* --------------------------------------------------------- */
+
+// Inheritance
+
+class Person5 {
+  id: number; // hiçbir şey yazmamak ile public yazmak aynı şey
+  firstName: string;
+  lastName: string;
+
+  constructor(id: number, firstName: string, lastName: string) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  getFullName() {
+    return `${this.firstName} ${this.lastName}`;
+  }
+}
+
+class Employee extends Person5 {
+  // Person5 parent, Employee child
+  constructor(id: number, firstName: string, lastName: string) {
+    super(id, firstName, lastName);
+  }
+}
+
+let employee3 = new Employee(1, "Berat", "Uçar");
+
+console.log(employee3);
+console.log(employee3.getFullName());
+
+/* --------------------------------------------------------- */
+
+// Static Methods - Properties
+
+class Circle {
+  static pi: number = 3.14;
+  pi = 3; // static ile aynı isimde property oluşturabilirim
+
+  constructor() {
+    this.pi++; // bu statik olmadığı için 1 kere etkilenir 1 artar
+    Circle.pi++; // her new kullandığımda 1 artacak
+  }
+
+  static hesapla(yaricap: number) {
+    return this.pi * yaricap * yaricap;
+  }
+}
+
+let objem = new Circle();
+let objem2 = new Circle();
+
+console.log(objem.pi); // normal property'i bastı
+console.log(objem2.pi); // normal property'i bastı
+
+console.log(Circle.pi); // static tanımlarsan new demeden bu şekilde direk erişebiliyorum
+console.log(Circle.hesapla(5)); // static method'da new demeden direk eriştim
+
+/* --------------------------------------------------------- */
+
+// Abstract Class
+
+abstract class Department {
+  constructor(public name: string) {}
+
+  printName(): void {
+    console.log("Department name: " + this.name);
+  }
+  abstract printMeeting(): void;
+
+  // abstract generateReports(): void;
+}
+
+//abstract classların tek başına new instance ını alamazsınız
+//fakat reference verebilirsiniz
+//abstract class içinde abstract metodları mutlaka extend ettiğiniz class ta implemente
+//etmeniz lazım
+
+class AccountingDepartment extends Department {
+  constructor() {
+    super("Accounting and Auditing");
+  }
+
+  printMeeting(): void {
+    console.log("The Accounting Department meets each Monday at 10am.");
+  }
+
+  generateReports(): void {
+    console.log("Generating accounting reports...");
+  }
+}
+
+let department: Department; // abstract class sadece referans verilir, referans verince sadece AccountingDepartment bulunan generateReports methodunu kullanamam
+department = new AccountingDepartment();
+department.printName();
+department.printMeeting();
+// department.generateReports();
+
+/* --------------------------------------------------------- */
+
+// Interface Nedir Nasıl Kullanılır ?
+
+interface Person6 {
+  firstName: string;
+  lastName: string;
+}
+
+function getFullName(person: Person6) {
+  return `${person.firstName} ${person.lastName}`;
+}
+
+let person2 = {
+  firstName: "Berat",
+  lastName: "Uçar",
+};
+
+console.log(getFullName(person2));
+
+/* --------------------------------------------------------- */
+
+// Interface Optional Parameters Readonly Function Type
+
+interface Person7 {
+  readonly firstName: string;
+  lastName: string;
+  middleName?: string;
+}
+
+function getFullName2(person: Person7) {
+  if (person.middleName) {
+    return `${person.firstName} ${person.middleName} ${person.lastName}`;
+  }
+  return `${person.firstName} ${person.lastName}`;
+}
+
+let person3: Person7 = {
+  firstName: "Berat",
+  lastName: "Uçar",
+  middleName: "Berk",
+};
+
+// person3.firstName = "BERAT"; (readonly olduğu için değiştiremem)
+
+console.log(getFullName2(person3));
+
+interface StringFormat {
+  (str: string, isUpper: boolean): string;
+}
+
+let format: StringFormat;
+
+format = function (str: string, isUpper: boolean) {
+  return isUpper ? str.toLocaleUpperCase() : str.toLocaleLowerCase();
+};
+
+console.log(format("Berat Uçar", false));
+
+/* --------------------------------------------------------- */
+
+// Interface Extend Etme ve Bir Class'a Interface İmplemente Etme
+
+interface IPerson {
+  name: string;
+  gender: string;
+}
+
+interface IEmployee extends IPerson {
+  empNumber: number;
+}
+
+interface IWorker extends IPerson {
+  empDepartment: string;
+}
+
+let employee4: IEmployee = {
+  empNumber: 1,
+  gender: "Male",
+  name: "Berk",
+};
+
+let employeeDepartment: IWorker = {
+  empDepartment: "Software Department",
+  gender: "Male",
+  name: "Berk",
+};
+
+console.log(employee4, employeeDepartment);
+
+interface IPerson2 {
+  name: string;
+  gender: string;
+}
+
+class Employee2 implements IPerson2 {
+  // implement ettiğim interface'deki her şeyi tekrar yazmam gerek
+  name: string;
+  gender: string;
+  empNumber: number;
+
+  constructor(name: string, gender: string, empNumber: number) {
+    (this.name = name), (this.gender = gender), (this.empNumber = empNumber);
+  }
+}
+
+let employee5 = new Employee2("Berat", "Male", 5);
+
+console.log(employee5);
