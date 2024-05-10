@@ -704,3 +704,248 @@ class Employee2 implements IPerson2 {
 let employee5 = new Employee2("Berat", "Male", 5);
 
 console.log(employee5);
+
+/* --------------------------------------------------------- */
+
+// Type Intersection
+
+interface BusinessPartner {
+  name: string;
+  credit: number;
+}
+
+interface Identity {
+  name: string;
+  id: number;
+}
+
+interface Contact {
+  email: string;
+  phone: string;
+}
+
+type Employee3 = Identity & Contact;
+
+let kisim: Employee3 = {
+  id: 54,
+  name: "Berat Uçar",
+  email: "dev.beratucar@gmail.com",
+  phone: "+905537457033",
+};
+
+console.log(kisim);
+
+type Customer = BusinessPartner & Contact;
+
+let musterim: Customer = {
+  credit: 1,
+  email: "dev.beratucar@gmail.com",
+  name: "Berat Uçar",
+  phone: "+905537457033",
+};
+
+console.log(musterim);
+
+/* --------------------------------------------------------- */
+
+// Type Guard
+
+type tip = string | number;
+
+function add3(a: tip, b: tip) {
+  if (typeof a === "number" && typeof b === "number") {
+    return a + b;
+  } else if (typeof a === "string" && typeof b === "string") {
+    return a.concat(b);
+  } /* else {
+    throw new Error("Lütfen doğru formatta data gönderin");
+  } */
+}
+
+console.log(add3(5, 6));
+console.log(add3("Berat ", "Uçar"));
+console.log(add3(5, "Berat"));
+
+class Customer2 {
+  isCreditAllowed(): boolean {
+    return true;
+  }
+}
+
+class Supplier {
+  isInShortList(): boolean {
+    return true;
+  }
+}
+
+type BusinessPartner2 = Customer | Supplier;
+
+function signContract(partner: BusinessPartner2) {
+  let message: string;
+  if (partner instanceof Customer2) {
+    message = partner.isCreditAllowed()
+      ? "Sign a new contract with the customer"
+      : "Credit issue";
+    return message;
+  } else if (partner instanceof Supplier) {
+    message = partner.isInShortList()
+      ? "Sign a new contract with the supplier"
+      : "Need to evaluate further";
+    return message;
+  }
+}
+
+/* --------------------------------------------------------- */
+
+// Generics
+
+function getRandomNumber(items: number[]): number {
+  let randomIndex = Math.floor(Math.random() * items.length);
+  return items[randomIndex];
+}
+
+let numbers = [1, 54, 65, 7, 8];
+
+console.log(getRandomNumber(numbers));
+
+function getRandomString(items: string[]): string {
+  let randomIndex = Math.floor(Math.random() * items.length);
+  return items[randomIndex];
+}
+
+let adlarim = ["Berat", "Tuba", "Merve"];
+
+console.log(getRandomString(adlarim));
+
+function getRandomElement(items: any[]): any {
+  // önerilen bir kullanım değil
+  let randomIndex = Math.floor(Math.random() * items.length);
+  return items[randomIndex];
+}
+
+console.log(getRandomElement(numbers));
+console.log(getRandomElement(adlarim));
+
+function getRandomElement2<T>(items: T[]): T {
+  let randomIndex = Math.floor(Math.random() * items.length);
+  return items[randomIndex];
+}
+
+let degiskenlerim = [true, false, true];
+
+console.log(getRandomElement2<number>(numbers));
+console.log(getRandomElement2<string>(adlarim));
+console.log(getRandomElement2<boolean>(degiskenlerim));
+// type inference olarak algılar ama ben elimde bu şekilde verebilirim
+
+/* --------------------------------------------------------- */
+
+// Generic Constraints
+
+function merge<U extends object, V extends object>(obj1: U, obj2: V) {
+  return {
+    ...obj1,
+    ...obj2,
+  };
+}
+
+let person4 = merge(
+  {
+    name: "Berat",
+  },
+  {
+    age: 25,
+  }
+);
+
+console.log(person4);
+
+/* --------------------------------------------------------- */
+
+// Interfacelerde Generic Kullanımı
+
+interface Months<U, V> {
+  key: U;
+  value: V;
+}
+
+let month: Months<number, string> = {
+  key: 1,
+  value: "January",
+};
+
+console.log(month);
+
+interface Collection<T> {
+  add(o: T): void;
+  remove(o: T): void;
+}
+
+class List<T> implements Collection<T> {
+  private items: T[] = [];
+  add(o: T): void {
+    this.items.push(o);
+    console.log(this.items);
+  }
+  remove(o: T): void {
+    let index = this.items.indexOf(o);
+    if (index > -1) {
+      this.items.splice(index, 1);
+      console.log(this.items);
+    }
+  }
+}
+
+let list = new List<number>();
+
+for (let i = 0; i < 10; i++) {
+  list.add(i);
+}
+
+for (let i = 0; i < 10; i++) {
+  list.remove(i);
+}
+
+/* --------------------------------------------------------- */
+
+// Classlarda Generic Kullanımı
+
+class Stack<T> {
+  private elements: T[] = [];
+
+  constructor(private size: number) {}
+  isEmpty(): boolean {
+    return this.elements.length === 0;
+  }
+  isFull(): boolean {
+    return this.elements.length === this.size;
+  }
+  push(element: T): void {
+    if (this.elements.length === this.size) {
+      throw new Error("The stack is overflow!");
+    }
+    this.elements.push(element);
+  }
+  pop() {
+    if (this.elements.length == 0) {
+      throw new Error("The stack is empty!");
+    }
+    return this.elements.pop();
+  }
+}
+
+function randBetween(low: number, high: number): number {
+  return Math.floor(Math.random() * (high - low + 1) + low);
+}
+
+let numbers2 = new Stack<number>(5);
+
+while (!numbers2.isFull()) {
+  let n = randBetween(1, 10);
+  console.log(`Push ${n} into the stack.`);
+  numbers2.push(n);
+}
+while (!numbers2.isEmpty()) {
+  let n = numbers2.pop();
+  console.log(`Pop ${n} from the stack.`);
+}

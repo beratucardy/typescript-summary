@@ -14,6 +14,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var age = 25;
 var firstName = "Berat";
 var lastName = "Uçar";
@@ -461,3 +472,171 @@ var Employee2 = /** @class */ (function () {
 }());
 var employee5 = new Employee2("Berat", "Male", 5);
 console.log(employee5);
+var kisim = {
+    id: 54,
+    name: "Berat Uçar",
+    email: "dev.beratucar@gmail.com",
+    phone: "+905537457033",
+};
+console.log(kisim);
+var musterim = {
+    credit: 1,
+    email: "dev.beratucar@gmail.com",
+    name: "Berat Uçar",
+    phone: "+905537457033",
+};
+console.log(musterim);
+function add3(a, b) {
+    if (typeof a === "number" && typeof b === "number") {
+        return a + b;
+    }
+    else if (typeof a === "string" && typeof b === "string") {
+        return a.concat(b);
+    } /* else {
+      throw new Error("Lütfen doğru formatta data gönderin");
+    } */
+}
+console.log(add3(5, 6));
+console.log(add3("Berat ", "Uçar"));
+console.log(add3(5, "Berat"));
+var Customer2 = /** @class */ (function () {
+    function Customer2() {
+    }
+    Customer2.prototype.isCreditAllowed = function () {
+        return true;
+    };
+    return Customer2;
+}());
+var Supplier = /** @class */ (function () {
+    function Supplier() {
+    }
+    Supplier.prototype.isInShortList = function () {
+        return true;
+    };
+    return Supplier;
+}());
+function signContract(partner) {
+    var message;
+    if (partner instanceof Customer2) {
+        message = partner.isCreditAllowed()
+            ? "Sign a new contract with the customer"
+            : "Credit issue";
+        return message;
+    }
+    else if (partner instanceof Supplier) {
+        message = partner.isInShortList()
+            ? "Sign a new contract with the supplier"
+            : "Need to evaluate further";
+        return message;
+    }
+}
+/* --------------------------------------------------------- */
+// Generics
+function getRandomNumber(items) {
+    var randomIndex = Math.floor(Math.random() * items.length);
+    return items[randomIndex];
+}
+var numbers = [1, 54, 65, 7, 8];
+console.log(getRandomNumber(numbers));
+function getRandomString(items) {
+    var randomIndex = Math.floor(Math.random() * items.length);
+    return items[randomIndex];
+}
+var adlarim = ["Berat", "Tuba", "Merve"];
+console.log(getRandomString(adlarim));
+function getRandomElement(items) {
+    // önerilen bir kullanım değil
+    var randomIndex = Math.floor(Math.random() * items.length);
+    return items[randomIndex];
+}
+console.log(getRandomElement(numbers));
+console.log(getRandomElement(adlarim));
+function getRandomElement2(items) {
+    var randomIndex = Math.floor(Math.random() * items.length);
+    return items[randomIndex];
+}
+var degiskenlerim = [true, false, true];
+console.log(getRandomElement2(numbers));
+console.log(getRandomElement2(adlarim));
+console.log(getRandomElement2(degiskenlerim));
+// type inference olarak algılar ama ben elimde bu şekilde verebilirim
+/* --------------------------------------------------------- */
+// Generic Constraints
+function merge(obj1, obj2) {
+    return __assign(__assign({}, obj1), obj2);
+}
+var person4 = merge({
+    name: "Berat",
+}, {
+    age: 25,
+});
+console.log(person4);
+var month = {
+    key: 1,
+    value: "January",
+};
+console.log(month);
+var List = /** @class */ (function () {
+    function List() {
+        this.items = [];
+    }
+    List.prototype.add = function (o) {
+        this.items.push(o);
+        console.log(this.items);
+    };
+    List.prototype.remove = function (o) {
+        var index = this.items.indexOf(o);
+        if (index > -1) {
+            this.items.splice(index, 1);
+            console.log(this.items);
+        }
+    };
+    return List;
+}());
+var list = new List();
+for (var i = 0; i < 10; i++) {
+    list.add(i);
+}
+for (var i = 0; i < 10; i++) {
+    list.remove(i);
+}
+/* --------------------------------------------------------- */
+// Classlarda Generic Kullanımı
+var Stack = /** @class */ (function () {
+    function Stack(size) {
+        this.size = size;
+        this.elements = [];
+    }
+    Stack.prototype.isEmpty = function () {
+        return this.elements.length === 0;
+    };
+    Stack.prototype.isFull = function () {
+        return this.elements.length === this.size;
+    };
+    Stack.prototype.push = function (element) {
+        if (this.elements.length === this.size) {
+            throw new Error("The stack is overflow!");
+        }
+        this.elements.push(element);
+    };
+    Stack.prototype.pop = function () {
+        if (this.elements.length == 0) {
+            throw new Error("The stack is empty!");
+        }
+        return this.elements.pop();
+    };
+    return Stack;
+}());
+function randBetween(low, high) {
+    return Math.floor(Math.random() * (high - low + 1) + low);
+}
+var numbers2 = new Stack(5);
+while (!numbers2.isFull()) {
+    var n = randBetween(1, 10);
+    console.log("Push ".concat(n, " into the stack."));
+    numbers2.push(n);
+}
+while (!numbers2.isEmpty()) {
+    var n = numbers2.pop();
+    console.log("Pop ".concat(n, " from the stack."));
+}
